@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import TodoList from '@/components/TodoList.vue'
 import { Task } from '@/models/Task'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const tasks = ref([
   new Task('Submit presentation', [
@@ -27,16 +27,15 @@ const tasks = ref([
   new Task('Interview')
 ])
 
-
 const allDone = computed(() => {
   return tasks.value.every(t => t.isAllComplete())
 })
 
-// watch(() => tasks, v => console.log('watch task', v.value))
-// watch(() => tasks, v => console.log('watch task deep', v.value), { deep: true })
+watch(() => tasks, v => console.log('watch task', v.value))
+watch(() => tasks, v => console.log('watch task deep', v.value), { deep: true })
 
-function onUpdate (_?: Task[]) {
-  // console.log('v-model update', tasks)
+function onUpdate (value?: Task[]) {
+  console.log('v-model update', value)
 }
 
 </script>
