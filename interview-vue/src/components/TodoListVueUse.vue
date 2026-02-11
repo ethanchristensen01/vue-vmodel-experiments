@@ -5,7 +5,7 @@
       {{ task.title }}
     </label>
     <div class="subtasks" v-if="task.subtasks?.length">
-      <TodoList
+      <TodoListVueUse
         v-model="task.subtasks"
         :readonly="readonly"
       />
@@ -15,11 +15,26 @@
 
 <script setup lang="ts">
 import { Task } from '@/models/Task'
+import { useVModel } from '@vueuse/core'
+import * as R from 'ramda'
+import { watch } from 'vue'
 
-const list = defineModel<Task[]>()
 const props = defineProps<{
+  modelValue: Task[]
   readonly?: boolean
 }>()
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', payload: Task[]): void
+}>()
+
+const list = useVModel(props, 'modelValue', emit, {
+  passive: true,
+  deep: true,
+  clone: R.clone,
+})
+
+watch(() => props.modelValue, () => list.value = R.clone(props.modelValue), { deep: true })
 
 </script>
 
