@@ -6,7 +6,7 @@
     </label>
     <div class="subtasks" v-if="task.subtasks?.length">
       <TodoListManual
-        v-model="task.subtasks"
+        :model-value="task.subtasks"
         @update:model-value="updateChildren(index, $event)"
         :readonly="readonly"
       />

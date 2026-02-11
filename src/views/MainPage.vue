@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import TodoList from '@/components/TodoListManual.vue'
+import TodoList from '@/components/TodoListMain.vue'
 import { Task } from '@/models/Task'
 import { computed, ref, watch } from 'vue'
 
