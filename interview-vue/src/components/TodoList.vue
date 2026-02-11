@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { Task } from '@/models/tasks'
+import { Task } from '@/models/Task'
 
 const list = defineModel<Task[]>()
 const props = defineProps<{

@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import TodoList from '@/components/TodoList.vue'
-import { Task } from '@/models/tasks'
+import { Task } from '@/models/Task'
 import { computed, ref } from 'vue'
 
 const tasks = ref([
