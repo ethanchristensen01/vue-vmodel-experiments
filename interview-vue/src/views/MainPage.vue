@@ -1,12 +1,23 @@
 <template>
   <section>
-    <h2>Todos</h2>
+    <h2>Task Tracker</h2>
     <fieldset>
+      <legend>Todo List</legend>
       <TodoList
         v-model:model-value="tasks"
         @update:model-value="onUpdate"
       />
     </fieldset>
+    <form @submit.prevent="() => false">
+      <h3>
+        Add a new task
+      </h3>
+      <label>
+        Name:
+        <input type="text" v-model="newText"/>
+      </label>
+      <button @click="addNewTask" class="add-button">Add</button>
+    </form>
     <div v-if="allDone">
       All done!
     </div>
@@ -15,8 +26,8 @@
     <details>
       <summary>Debug</summary>
       <div>
-        <h3>Copy of Todos</h3>
         <fieldset>
+          <legend>Copy of Todo List</legend>
           <TodoList
             v-model="tasksMirror"
           />
@@ -52,6 +63,13 @@ const allDone = computed(() => {
   return tasks.value.every(t => t.isAllComplete())
 })
 
+const newText = ref('')
+
+function addNewTask () {
+  if (newText.value) {
+    tasks.value.push(new Task(newText.value))
+  }
+}
 
 watch(() => tasks, v => console.log('watch task', v.value))
 watch(() => tasks, v => console.log('watch task deep', v.value), { deep: true })
@@ -68,14 +86,35 @@ const tasksMirror = ref(tasks.value)
   box-sizing: border-box;
 }
 
-fieldset {
-  width: fit-content;
-  margin-bottom: 1em;
+section {
+  width: 40ch;
+}
+
+:is(section, details) > * + * {
+  margin-top: 1em;
+}
+
+fieldset, form {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  border: 2px groove rgba(40, 40, 40, 1);
 }
 
 output {
   background-color: #171717;
   padding: 0.5em;
   min-height: 6em;
+  display: block;
+}
+
+.add-button {
+  width: fit-content;
+  align-self: end;
+  margin-top: 3em;
+}
+
+summary {
+  font-size: x-large;
 }
 </style>
