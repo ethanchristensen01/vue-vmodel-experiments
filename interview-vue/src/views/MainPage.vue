@@ -7,6 +7,7 @@
         v-model:model-value="tasks"
         @update:model-value="onUpdate"
       />
+      <button @click="resetTasks" class="reset-button">Reset</button>
     </fieldset>
     <form @submit.prevent="() => false">
       <h3>
@@ -71,6 +72,10 @@ function addNewTask () {
   }
 }
 
+function resetTasks () {
+  tasks.value.forEach(t => t.reset())
+}
+
 watch(() => tasks, v => console.log('watch task', v.value))
 watch(() => tasks, v => console.log('watch task deep', v.value), { deep: true })
 
@@ -109,9 +114,13 @@ output {
 }
 
 .add-button {
-  width: fit-content;
   align-self: end;
   margin-top: 3em;
+}
+
+.reset-button {
+  align-self: end;
+  margin-top: 1em;
 }
 
 summary {

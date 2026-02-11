@@ -19,4 +19,9 @@ export class Task {
   isAllComplete (): boolean {
     return this.completed && (!this.subtasks || this.subtasks.every(t => t.isAllComplete()))
   }
+  
+  reset () {
+    this.completed = false
+    this.subtasks?.forEach(t => t.reset())
+  }
 }
