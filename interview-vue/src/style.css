@@ -22,9 +22,12 @@ a {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  flex-direction: column;
+  justify-items: start;
+  align-items: center;
+  
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100vh;  
 }
 
 h1 {
