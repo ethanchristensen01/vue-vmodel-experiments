@@ -1,24 +1,22 @@
-export class Tree<T> {
-  content: T
-  children?: Tree<T>[]
-  
-  constructor (content: T, children?: Tree<T>[]) {
-    this.content = content
-    this.children = children ?? []
-  }
-}
-
 export class Task {
   static idCounter: number = 0
   id: number
   title: string
   completed: boolean
   description?: string
+  subtasks?: Task[]
+  parentId?: number
   
-  constructor (title: string, description?: string, completed?: boolean) {
+  constructor (title: string, subtasks?: Task[], options?: {completed?: boolean, description?: string}) {
     this.id = Task.idCounter++
     this.title = title
-    this.completed = completed ?? false
-    this.description = description
+    this.completed = options?.completed ?? false
+    this.description = options?.description
+    this.subtasks = subtasks
+    this.subtasks?.forEach(t => t.parentId = this.id)
+  }
+  
+  isAllComplete (): boolean {
+    return this.completed && (!!this.subtasks?.length || this.subtasks!.every(t => t.isAllComplete()))
   }
 }

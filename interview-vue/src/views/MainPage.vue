@@ -1,38 +1,43 @@
 <template>
-  <div class="panel">
-    <h2>Main List</h2>
-    <ul>
-      <ItemList
-        v-for="(v, index) in trees"
-        :model-value="v!"
-        @update:model-value="updateTree(index, $event)"
-        :key="v!.content.id"
-      />
-    </ul>
+  <fieldset>
+    <TodoList
+      v-model:model-value="tasks"
+      @update:model-value="onUpdate"
+    />
+  </fieldset>
+  <div v-if="allDone">
+    All done!
   </div>
 </template>
 
 <script setup lang="ts">
-import ItemList from '@/components/ItemList.vue';
-import { Task, Tree } from '@/models/tasks';
-import { computed, ref, watch, watchEffect } from 'vue';
-import * as R from 'ramda';
+import TodoList from '@/components/TodoList.vue'
+import { Task } from '@/models/tasks'
+import { computed, ref } from 'vue'
 
-const trees = ref([
-  new Tree(new Task('Make presentation'), [
-    new Tree(new Task('Open editor'), [
-      new Tree(new Task('Choose editor')), 
-      new Tree(new Task('Open it'))
-    ])
+const tasks = ref([
+  new Task('Submit presentation', [
+    new Task('Draft', [], { completed: true }),
+    new Task('Create'),
+    new Task('Review'),
+    new Task('Submit')
   ]),
-  new Tree(new Task('Make appointment')),
-  new Tree(new Task('Foo Bar'))
+  new Task('Get haircut'),
+  new Task('Go to work'),
+  new Task('Interview')
 ])
 
-function updateTree(index: number, tree: Tree<Task>) {
-  trees.value[index] = tree
+
+const allDone = computed(() => {
+  return tasks.value.every(t => t.isAllComplete())
+})
+
+// watch(() => tasks, v => console.log('watch task', v.value))
+// watch(() => tasks, v => console.log('watch task deep', v.value), { deep: true })
+
+function onUpdate (_?: Task[]) {
+  // console.log('v-model update', tasks)
 }
-watchEffect(() => console.log('treesUpdated', trees.value))
 
 </script>
 
