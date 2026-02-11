@@ -35,9 +35,11 @@
         </fieldset>
       </div>
       <output>
-        <code>
+        <pre class="code">
           tasks.value === tasksMirror.value: {{ tasks === tasksMirror }}
-        </code>
+          watchDeepCount = {{ watchDeepCount }}
+          updateCount = {{ updateCount }}
+        </pre class="code">
       </output>
     </details>
   </section>
@@ -77,10 +79,16 @@ function resetTasks () {
 }
 
 watch(() => tasks, v => console.log('watch task', v.value))
-watch(() => tasks, v => console.log('watch task deep', v.value), { deep: true })
+const watchDeepCount = ref(0)
+watch(() => tasks, v => {
+  console.log('watch task deep', v.value)
+  watchDeepCount.value++
+}, { deep: true })
 
+const updateCount = ref(0)
 function onUpdate (value?: Task[]) {
   console.log('v-model update', value)
+  updateCount.value++
 }
 
 const tasksMirror = ref(tasks.value)
@@ -125,5 +133,9 @@ output {
 
 summary {
   font-size: x-large;
+}
+
+pre.code {
+  white-space: pre-line;
 }
 </style>
